@@ -1,7 +1,9 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Net.Http;
+using System.Net;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Talkative
 {
@@ -33,13 +35,14 @@ namespace Talkative
             _client.DefaultRequestHeaders.Add("Talkative request",".NET Standard telegram bot client");
         }
 
-        public Bot GetMe(){
+        public async Task<Bot> GetMe(){
             var url = _baseUrl + $"{_token}/getMe";
-            using(_client){
-                var request = _client.GetAsync(url);
-                var result= await request;
-                JsonConvert.DeserializeObject<Bot>(requestResult);
-            }
+
+            var requestResult = await _client.GetAsync(url);
+
+            var bot = JsonConvert.DeserializeObject<Bot>(await requestResult.Content.ReadAsStringAsync());
+            
+            return bot;
         }
 
         private bool ValidateToken(string token){

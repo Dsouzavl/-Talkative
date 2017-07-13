@@ -64,6 +64,20 @@ namespace Talkative
              return messageResult;
         }
 
+        public async Task<Message> forwardMessage(int destinationChatId, int fromChatId, int messageId){
+            var url = _baseUrl + $"{_token}/forwardMessage";
+
+            var body = new StringContent($@" chat_id:{destinationChatId},
+                                             from_chat_id:{fromChatId},
+                                             message_id:{messageId}
+                                        ");
+            var handler = new HttpHandler<Message>(_client, url);
+            
+            var messageResult = await handler.HandleHttpAction(HttpMethod.Post,body);
+
+            return messageResult;
+        }
+
         private bool ValidateToken(string token){
             var leftSide = token.Split(':');
             var numCatch = new Regex(@"\d*");

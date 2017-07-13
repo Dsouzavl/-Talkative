@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 
 namespace Talkative.HttpActions
 {
-    internal abstract class Handler<T>
+    internal abstract class Handler<Object>
     {        
         protected abstract Task<HttpResponseMessage> Request(HttpMethod method, HttpContent content=null);
         
-        public async Task<T> DeserializeObject(T objectToDeserialize, HttpMethod method, HttpContent content=null){
+        public async Task<object> DeserializeObject(object objectToDeserialize, HttpMethod method, HttpContent content=null){
              var response = await Request(method, content);
-             return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+             return JsonConvert.DeserializeObject<object>(await response.Content.ReadAsStringAsync());
         }
     }
 }

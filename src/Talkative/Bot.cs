@@ -6,10 +6,11 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Text;
 using Talkative.Abstractions;
+using Talkative.HttpActions;
 
 namespace Talkative
 {
-    internal class Bot
+    public class Bot
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
@@ -19,6 +20,7 @@ namespace Talkative
         private string _baseUrl { get; set; }
         private string _token { get; set; }
         private HttpClient _client { get; set;}
+        private Handler<ITelegramObject> _handler {get ; set;} 
 
         public Bot(string token, string baseUrl = null, TimeSpan ?getInfoTimeout=null){
             _client = new HttpClient();
@@ -45,9 +47,9 @@ namespace Talkative
         public async Task<Bot> getMe(){    
             var url = _baseUrl + $"{_token}/getMe";
 
-            var requestResult = await _client.GetAsync(url);
+            _handler = new HttpHandler<ITelegramObject>(_client, url);
 
-            var bot = JsonConvert.DeserializeObject<Bot>(await requestResult.Content.ReadAsStringAsync());
+            var bot = await _handler.DeserializeObject(,HttpMethod.Get);
                 
             return bot;
         }
@@ -56,10 +58,6 @@ namespace Talkative
              var url = _baseUrl + $"{_token}/sendMessage";
 
              var body =  Tuple.Create($"chat_id: {chatId}", $"text:{messageContent}");
-
-             var requestResult = await _client.PostAsync(url,new StringContent(body.ToString(),Encoding.UTF8,"application/json"));
-
-             var messageResult = JsonConvert.DeserializeObject<Message>(await requestResult.Content.ReadAsStringAsync());
 
              return messageResult;
         }
@@ -81,6 +79,16 @@ namespace Talkative
                 return false;
             }
             return true;
+        }
+
+        private async Task<object> HttpAndResult(Type objectTypeToDeserialize, HttpMethod method){
+            if(method == HttpMethod.Get){
+
+            }
+            
+            var requestResult = await _client 
+
+            var bot = JsonConvert.DeserializeObject<Bot>(await requestResult.Content.ReadAsStringAsync());
         }
     }
 }

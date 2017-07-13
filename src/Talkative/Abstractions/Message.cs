@@ -1,7 +1,7 @@
 using System;
 
 namespace Talkative.Abstractions{
-    internal class Message{
+    public class Message{
         public bool Ok { get; set; }
         public int Id { get; set; }
         public User FromUser { get; set; }

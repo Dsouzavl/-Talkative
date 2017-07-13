@@ -1,5 +1,4 @@
 using System.Net.Http;
-using Talkative.HttpActions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;

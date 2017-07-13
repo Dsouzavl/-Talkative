@@ -16,11 +16,9 @@ namespace Talkative
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-        public string Name { get; set; }
         private string _baseUrl { get; set; }
         private string _token { get; set; }
         private HttpClient _client { get; set;}
-        private Handler<ITelegramObject> _handler {get ; set;} 
 
         public Bot(string token, string baseUrl = null, TimeSpan ?getInfoTimeout=null){
             _client = new HttpClient();
@@ -47,9 +45,9 @@ namespace Talkative
         public async Task<Bot> getMe(){    
             var url = _baseUrl + $"{_token}/getMe";
 
-            _handler = new HttpHandler<ITelegramObject>(_client, url);
+            var handler = new HttpHandler<Bot>(_client, url);
 
-            var bot = await _handler.DeserializeObject(,HttpMethod.Get);
+            var bot = await handler.HandleHttpAction(HttpMethod.Get);
                 
             return bot;
         }
@@ -57,19 +55,13 @@ namespace Talkative
         public async Task<Message> sendMessage(int chatId, string messageContent){
              var url = _baseUrl + $"{_token}/sendMessage";
 
-             var body =  Tuple.Create($"chat_id: {chatId}", $"text:{messageContent}");
+             var body =  new StringContent($"chat_id: {chatId}, text:{messageContent}");
+
+             var handler = new HttpHandler<Message>(_client,url);
+
+             var messageResult = await handler.HandleHttpAction(HttpMethod.Post,body);
 
              return messageResult;
-        }
-        
-        public async Task<Bot> sendMessage(){    
-            var url = _baseUrl + $"{_token}/getMe";
-
-            var requestResult = await _client.GetAsync(url);
-
-            var bot = JsonConvert.DeserializeObject<Bot>(await requestResult.Content.ReadAsStringAsync());
-                
-            return bot;
         }
 
         private bool ValidateToken(string token){
@@ -79,16 +71,6 @@ namespace Talkative
                 return false;
             }
             return true;
-        }
-
-        private async Task<object> HttpAndResult(Type objectTypeToDeserialize, HttpMethod method){
-            if(method == HttpMethod.Get){
-
-            }
-            
-            var requestResult = await _client 
-
-            var bot = JsonConvert.DeserializeObject<Bot>(await requestResult.Content.ReadAsStringAsync());
         }
     }
 }

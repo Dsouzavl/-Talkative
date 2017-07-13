@@ -9,6 +9,8 @@ using System.Text;
 using Talkative.Models.Response;
 using Talkative.Builders;
 using Talkative.Models.Request;
+using Talkative.Models.Entities;
+using Talkative.Common;
 
 namespace Talkative
 {
@@ -29,52 +31,48 @@ namespace Talkative
             _baseUri = new Uri($"https://api.telegram.org/bot{token}");
         }
 
-        public TelegramBotClient(string token, Uri apiUrl) : this(token)
+        public TelegramBotClient(string token, Uri apiUri) : this(token)
         {
-            _baseUri = new Uri(apiUrl, $"/bot{token}");
+            _baseUri = new Uri(apiUri, $"/bot{token}");
         }
 
-        public async Task<BaseResponse> getMe()
+        public async Task<TelegramObject> getMe()
         {
-            var request = new HttpRequestBuilder(_baseUri, HttpMethod.Get, null).AddResource("/getMe")
-                                                .Build();
+            var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Get,null);
+            
+            var request =  builder.AddResource("/getMe").Build();
 
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var handler = new HttpRequestHandler<TelegramObject>(request);
 
-            var result = new ApiResponse<BaseResponse>(response);
-
-            var bot = await result.GetResponse().ConfigureAwait(false);
+            var bot = await handler.HandleHttpAction();
 
             return bot;
         }
 
         public async Task<TelegramMessage> sendMessage(int chatId, string messageContent)
         {
-            var request = new HttpRequestBuilder(_baseUri, HttpMethod.Get, null).AddResource("/getMe")
-                                                .Build();
+            var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Post,null);
 
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var request =  builder.AddResource("/sendMessage").AndContent(typeof(TelegramMessage)).Build();
+                                
+            var handler = new HttpRequestHandler<TelegramMessage>(request);
 
-            var result = new ApiResponse<BaseResponse>(response);
-
-            var bot = await result.GetResponse().ConfigureAwait(false);
-
-            return bot;
+            var result = await handler.HandleHttpAction();
+            
+            return result;
         }
 
-        public async Task<ForwardMessage> forwardMessage(int destinationChatId, int fromChatId, int messageId)
+        public async Task<ForwardMessageResponse> forwardMessage(int destinationChatId, int fromChatId, int messageId)
         {
-            var url = _baseUri + $"/forwardMessage";
+            var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Post,null);
 
-            var body = new StringContent($@" chat_id:{destinationChatId},
-                                             from_chat_id:{fromChatId},
-                                             message_id:{messageId}
-                                        ");
-            var handler = new HttpHandler<ForwardMessage>(_client, url);
+            var request =  builder.AddResource("/forwardMessage").AndContent(typeof(ForwardMessageRequest)).Build();
+                                
+            var handler = new HttpRequestHandler<ForwardMessageResponse>(request);
 
-            var messageResult = await handler.HandleHttpAction(HttpMethod.Post, body);
-
-            return messageResult;
+            var result = await handler.HandleHttpAction();
+            
+            return result;
         }
 
         private bool ValidateToken(string token)

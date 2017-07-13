@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Text;
 using Talkative.Abstractions;
 using Talkative.HttpActions;
+using Talkative.Models.Abstractions;
+using Talkative.Models.Concretes;
 
 namespace Talkative
 {
@@ -52,26 +54,26 @@ namespace Talkative
             return bot;
         }
 
-        public async Task<Message> sendMessage(int chatId, string messageContent){
+        public async Task<TelegramMessage> sendMessage(int chatId, string messageContent){
              var url = _baseUrl + $"{_token}/sendMessage";
 
              var body =  new StringContent($"chat_id: {chatId}, text:{messageContent}");
 
-             var handler = new HttpHandler<Message>(_client,url);
+             var handler = new HttpHandler<TelegramMessage>(_client,url);
 
              var messageResult = await handler.HandleHttpAction(HttpMethod.Post,body);
 
              return messageResult;
         }
 
-        public async Task<Message> forwardMessage(int destinationChatId, int fromChatId, int messageId){
+        public async Task<ForwardMessage> forwardMessage(int destinationChatId, int fromChatId, int messageId){
             var url = _baseUrl + $"{_token}/forwardMessage";
 
             var body = new StringContent($@" chat_id:{destinationChatId},
                                              from_chat_id:{fromChatId},
                                              message_id:{messageId}
                                         ");
-            var handler = new HttpHandler<Message>(_client, url);
+            var handler = new HttpHandler<ForwardMessage>(_client, url);
             
             var messageResult = await handler.HandleHttpAction(HttpMethod.Post,body);
 

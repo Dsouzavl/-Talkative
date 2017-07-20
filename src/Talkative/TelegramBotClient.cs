@@ -17,7 +17,7 @@ namespace Talkative
 {
     public class TelegramBotClient
     {
-        private Uri _baseUri;
+        private string _baseUri;
         private readonly string _token;
 
         public TelegramBotClient(string token)
@@ -29,12 +29,12 @@ namespace Talkative
 
             _token = token;
 
-            _baseUri = new Uri($"https://api.telegram.org/bot{token}");
+            _baseUri = $"https://api.telegram.org/bot{token}";
         }
 
-        public TelegramBotClient(string token, Uri apiUri) : this(token)
+        public TelegramBotClient(string token, string apiUri) : this(token)
         {
-            _baseUri = new Uri(apiUri, $"/bot{token}");
+            _baseUri = apiUri + $"/bot{token}";
         }
 
         public async Task<TelegramObject> getMe() 
@@ -53,7 +53,7 @@ namespace Talkative
         public async Task<UpdateResponse> getUpdates(){
             var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Get, null);
             
-            var request = builder.AddResource("getUpdates").Build();
+            var request = builder.AddResource("/getUpdates").Build();
 
             var handler = new HttpRequestHandler<UpdateResponse>(request);
 

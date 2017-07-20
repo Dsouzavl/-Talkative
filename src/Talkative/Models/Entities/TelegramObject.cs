@@ -1,6 +1,5 @@
-namespace Talkative.Models.Entities
-{
-    public abstract class TelegramObject
+namespace Talkative.Models.Entities {
+    public class TelegramObject
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

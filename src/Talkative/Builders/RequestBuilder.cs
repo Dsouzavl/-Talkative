@@ -8,7 +8,7 @@ namespace Talkative.Builders
 {
     internal class HttpRequestBuilder
     {
-        private readonly Uri _baseUri;
+        private readonly string _baseUri;
         private readonly HttpMethod _method;
         private readonly HttpContent _content;
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
@@ -19,7 +19,7 @@ namespace Talkative.Builders
             }
         };
 
-        public HttpRequestBuilder(Uri uri, HttpMethod method, HttpContent content)
+        public HttpRequestBuilder(string uri, HttpMethod method, HttpContent content)
         {
             _baseUri = uri;
             _method = method;
@@ -28,7 +28,7 @@ namespace Talkative.Builders
 
         public HttpRequestBuilder AddResource(string resourcePath)
         {
-            var finalUrl = new Uri(_baseUri, resourcePath);
+            var finalUrl = _baseUri + resourcePath;
             return new HttpRequestBuilder(finalUrl, _method, _content);
         }
 

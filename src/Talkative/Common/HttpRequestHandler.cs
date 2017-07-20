@@ -16,10 +16,6 @@ namespace Talkative.Common
         public HttpRequestHandler(HttpRequestMessage request)
         {
             _client = new HttpClient();
-
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Add("Talkative request", ".NET Standard telegram bot client");
-
             _request = request;
             _responseHandler = new ApiResponse<T>(_response);
         }

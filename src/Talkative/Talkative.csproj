@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <PackageId>Talkative.Telegram</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Vhost</Authors>
-    <Description>Telegram bot api handler utility</Description>
-    <PackageTags>telegram bot botapi</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

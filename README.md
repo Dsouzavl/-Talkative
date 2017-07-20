@@ -10,19 +10,21 @@ public class MyBot {
     bot = new TelegramBotClient("yourToken");
 
     //get bot information.
-    bot.getMe()
+    bot.getMe();
 
     //get updates(messages received).
-    bot.getUpdates()
+    bot.getUpdates();
 
     //send a message.
-    bot.sendMessage(chatId, messageContent)
+    bot.sendMessage(chatId, messageContent);
 
     //forward a message.
-    bot.forwardMessage(destinationChatId, fromChatId, messageId)
+    bot.forwardMessage(destinationChatId, fromChatId, messageId);
 }
 ```
 
 Our goal is implement all methods supported by _Telegram.Inc Bot Rest Api_, so your cooperation is important.
+
+**USE VERSION 1.0.1, WE ADD THE NUGET DEPENDECIES ( Newtonsoft.Json 10.0.0.0 AND System.Net.Http 4.3.2 )**
 
 Thanks :) 

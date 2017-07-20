@@ -50,12 +50,12 @@ namespace Talkative
             return bot;
         }
 
-        public async Task<TelegramObject> getUpdates(){
+        public async Task<UpdateResponse> getUpdates(){
             var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Get, null);
             
             var request = builder.AddResource("getUpdates").Build();
 
-            var handler = new HttpRequestHandler<TelegramObject>(request);
+            var handler = new HttpRequestHandler<UpdateResponse>(request);
 
             var updates = await handler.HandleHttpAction();
 

@@ -11,6 +11,7 @@ using Talkative.Builders;
 using Talkative.Models.Request;
 using Talkative.Models.Entities;
 using Talkative.Common;
+using System.Collections.Generic;
 
 namespace Talkative
 {
@@ -36,7 +37,7 @@ namespace Talkative
             _baseUri = new Uri(apiUri, $"/bot{token}");
         }
 
-        public async Task<TelegramObject> getMe()
+        public async Task<TelegramObject> getMe() 
         {
             var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Get,null);
             
@@ -47,6 +48,18 @@ namespace Talkative
             var bot = await handler.HandleHttpAction();
 
             return bot;
+        }
+
+        public async Task<TelegramObject> getUpdates(){
+            var builder = new HttpRequestBuilder(_baseUri, HttpMethod.Get, null);
+            
+            var request = builder.AddResource("getUpdates").Build();
+
+            var handler = new HttpRequestHandler<TelegramObject>(request);
+
+            var updates = await handler.HandleHttpAction();
+
+            return updates;
         }
 
         public async Task<TelegramMessage> sendMessage(int chatId, string messageContent)

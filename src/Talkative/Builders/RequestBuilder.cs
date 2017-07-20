@@ -8,7 +8,6 @@ namespace Talkative.Builders
 {
     internal class HttpRequestBuilder
     {
-        private readonly HttpContent _requestBody;
         private readonly Uri _baseUri;
         private readonly HttpMethod _method;
         private readonly HttpContent _content;

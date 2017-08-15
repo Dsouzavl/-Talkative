@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Talkative.Telegram</id>
+        <version>0.1.1</version>
+        <title>Talkative</title>
+        <description>Telegram bot api handler</description>
+        <authors>Vhost</authors>
+
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="10.0.3" />
+            <dependency id="System.Net.Http" version="4.3.2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Debug\netstandard1.4\Talkative.dll" target="lib\netstandard1.4"/>
+    </files>
+</package>

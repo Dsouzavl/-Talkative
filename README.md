@@ -7,19 +7,19 @@ The main class, the heart of program is the "TelegramBotClient" class, where you
 
 ```csharp
 public class MyBot {
-    bot = new TelegramBotClient("yourToken");
+    bot = new Bot("yourToken");
 
     //get bot information.
-    bot.getMe()
+    bot.GetMe();
 
     //get updates(messages received).
-    bot.getUpdates()
+    bot.GetUpdates();
 
     //send a message.
-    bot.sendMessage(chatId, messageContent)
+    bot.SendMessage(chatId, messageContent);
 
     //forward a message.
-    bot.forwardMessage(destinationChatId, fromChatId, messageId)
+    bot.ForwardMessage(destinationChatId, fromChatId, messageId);
 }
 ```
 
